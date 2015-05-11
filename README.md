@@ -1,4 +1,4 @@
-the missing golang middleware!
+API in [godoc](http://godoc.org/github.com/tiancaiamao/middleware)
 
 The trick played here is that context is hiden in ResponseWriter. So, one can write standard http.Handler as normal
 and get the context as need, in this way:
