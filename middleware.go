@@ -29,29 +29,29 @@ type ContextResponseWriter interface {
 	Context
 }
 
-type Chain struct {
+type chain struct {
 	middlewares []MiddleWare
 	raw         http.Handler
 }
 
-// New(Raw, A, B, C) return a *Chain which, when called, will execute in this order: C -> B -> A -> Raw.
+// New(Raw, A, B, C) return a http.Handler which, when called, will execute in this order: C -> B -> A -> Raw.
 //
 // Raw is the original Handler, wrap it with middleware A,
 // then wrap the result Handler with middleware B,
 // and then wrap the result Handler with middleware C
-func New(handler http.Handler, middlewares ...MiddleWare) *Chain {
-	return &Chain{
+func New(handler http.Handler, middlewares ...MiddleWare) http.Handler {
+	return &chain{
 		raw:         handler,
 		middlewares: middlewares,
 	}
 }
 
-func (c *Chain) Add(middleware MiddleWare) {
+func (c *chain) Add(middleware MiddleWare) {
 	c.middlewares = append(c.middlewares, middleware)
 }
 
 // Chain implement the http.Handler interface
-func (c *Chain) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (c *chain) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	final := c.raw
 	for _, mw := range c.middlewares {
 		final = mw.Chain(final)

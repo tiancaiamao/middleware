@@ -1,6 +1,6 @@
 API in [godoc](http://godoc.org/github.com/tiancaiamao/middleware)
 
-The trick played here is that context is hiden in ResponseWriter. So, one can write standard http.Handler as normal
+The trick played here is that context is hiden in ResponseWriter. So, one can write standard http.Handler as usual
 and get the context as need, in this way:
 
 	func HelloWorld(w http.ResponseWriter, r *http.Request) {
