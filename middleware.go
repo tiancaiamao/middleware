@@ -17,12 +17,16 @@ func (f MiddleWareFunc) Chain(h http.Handler) http.Handler {
 	return f(h)
 }
 
+type Context interface {
+	Value(interface{}) interface{}
+}
+
 // ContextResponseWriter is a interface that require Value method in addition to http.ResponseWriter
 //
 // golang/x/net/context.Context can be used as Value here because it implements Value(interface{})interface{}
 type ContextResponseWriter interface {
 	http.ResponseWriter
-	Value(interface{}) interface{}
+	Context
 }
 
 type Chain struct {
@@ -40,6 +44,10 @@ func New(handler http.Handler, middlewares ...MiddleWare) *Chain {
 		raw:         handler,
 		middlewares: middlewares,
 	}
+}
+
+func (c *Chain) Add(middleware MiddleWare) {
+	c.middlewares = append(c.middlewares, middleware)
 }
 
 // Chain implement the http.Handler interface
