@@ -39,7 +39,7 @@ type chain struct {
 // Raw is the original Handler, wrap it with middleware A,
 // then wrap the result Handler with middleware B,
 // and then wrap the result Handler with middleware C
-func New(handler http.Handler, middlewares ...MiddleWare) http.Handler {
+func New(handler http.Handler, middlewares ...MiddleWare) *chain {
 	return &chain{
 		raw:         handler,
 		middlewares: middlewares,
